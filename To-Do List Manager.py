@@ -1,9 +1,12 @@
 # Allow users to add, delete, and view tasks.
 # Save tasks to a file for persistence.
+
+import os
+
 def menu():
     global isrunning
     print("Main menu")
-    print("[1] Add Task \n[2] View Tasks \n[3] Delete Tasks")
+    print("[1] Add Task \n[2] View Tasks \n[3] Delete Tasks \n[4] Delete current file")
     print("[q] Quit")
 
     choice = input("choose an option : ").lower()
@@ -16,8 +19,13 @@ def menu():
             TaskView()
         case '3':
             deleteTask()
+        case '4':
+            deleteFile()
         case 'q':
             isrunning = False
+        case _:
+            print ("invalid choice!")
+            menu()
     
 
     return isrunning
@@ -27,36 +35,62 @@ def addTask():
     while True:
         toDo = input("Enter your task : ")
         toDoNum = input("Enter your task number : ")
-        toDoList.update({ toDoNum : toDo })
+        with open("Tasks.txt", "a") as tasksFile:
+            tasksFile.write(f"{toDoNum}- {toDo}\n")
 
         if input("do you want to add any other tasks? [y/n] : ").lower() == "n":
             break
 
 def deleteTask():
-    TaskView()
-    toDoNum = input("[a] to delete all \nEnter the number of the task you want to delete : ")
+    with open("Tasks.txt", "r") as tasksFile:
+        lines = tasksFile.readlines()  
 
-    if toDoNum.lower() == 'a':
-        toDoList.clear()
-        print("Deleted all tasks successfully")
+    print("-" * 50)
+    print("Your Tasks:")
+    for i, line in enumerate(lines, start=1):
+        print(f"[{i}] {line.strip()}")  
+    print("-" * 50)
+
+    choice = input("[a] Delete all tasks \nEnter the task number to delete: ").lower()
+
+    if choice == 'a':  
+        open("Tasks.txt", "w").close()  
+        print("All tasks have been deleted!")
+        
+    elif choice.isdigit():  
+        task_number = int(choice) - 1  
+        if 0 <= task_number < len(lines):
+            del lines[task_number]  
+            with open("Tasks.txt", "w") as tasksFile:
+                tasksFile.writelines(lines)  
+            print(f"Task {choice} has been deleted!")
+        else:
+            print("Invalid task number.")
     else:
-        del toDoList[toDoNum]
-        print("Deleted selected Task successfully")
-    
+        print("Invalid input!")
 
 
 
 def TaskView():
+    tasksFile = open("Tasks.txt", "r")
     print ("-" * 50)
     print("Your Tasks : ")
-    for taskNum,task in toDoList.items():
-        print(f"{taskNum}- {task}")
+    for line in tasksFile.readlines():
+        print(line.strip())
     print ("-" * 50)
+    tasksFile.close
 
+def deleteFile():
+    if os.path.exists("Tasks.txt"):
+        os.remove("Tasks.txt")
+        print("file deleted successfully!")
+    else:
+        print("The file is deleted already!")
 
+if not os.path.exists("Tasks.txt"):
+    tasksFile = open("Tasks.txt", "x")
+    tasksFile.close
 
-
-toDoList = {}
 isrunning = True
 
 while isrunning:
