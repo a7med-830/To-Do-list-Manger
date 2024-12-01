@@ -8,14 +8,7 @@ def menu():
 
     choice = input("choose an option : ").lower()
 
-    # if choice == '1':
-    #     addTask()
-    # elif choice == '2':
-    #     TaskView()
-    # elif choice.lower() == 'q':
-    #     isrunning = False
-
-
+    
     match choice:
         case '1':
             addTask()
@@ -35,7 +28,6 @@ def addTask():
         toDo = input("Enter your task : ")
         toDoNum = input("Enter your task number : ")
         toDoList.update({ toDoNum : toDo })
-        print(toDoList)
 
         if input("do you want to add any other tasks? [y/n] : ").lower() == "n":
             break
