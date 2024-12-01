@@ -35,10 +35,13 @@ def addTask():
     while True:
         toDo = input("Enter your task : ")
         with open("Tasks.txt", "r") as tasksFile:
-             tasks = tasksFile.readlines()
+            tasks = tasksFile.readlines()
+
         with open("Tasks.txt", "a") as tasksFile:  
             toDoNum = len(tasks) + 1
             tasksFile.write(f"{toDoNum}- {toDo}\n")
+
+        print("Task add successfully!")
 
         if input("do you want to add any other tasks? [y/n] : ").lower() == "n":
             break
@@ -69,9 +72,11 @@ def deleteTask():
             print(f"Task {choice} has been deleted!")
         else:
             print("Invalid task number.")
+            deleteTask()
 
     else:
         print("Invalid input!")
+        deleteTask()
 
 
 
