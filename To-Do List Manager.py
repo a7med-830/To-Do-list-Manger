@@ -34,8 +34,10 @@ def menu():
 def addTask():
     while True:
         toDo = input("Enter your task : ")
-        toDoNum = input("Enter your task number : ")
-        with open("Tasks.txt", "a") as tasksFile:
+        with open("Tasks.txt", "r") as tasksFile:
+             tasks = tasksFile.readlines()
+        with open("Tasks.txt", "a") as tasksFile:  
+            toDoNum = len(tasks) + 1
             tasksFile.write(f"{toDoNum}- {toDo}\n")
 
         if input("do you want to add any other tasks? [y/n] : ").lower() == "n":
@@ -59,6 +61,7 @@ def deleteTask():
         
     elif choice.isdigit():  
         task_number = int(choice) - 1  
+
         if 0 <= task_number < len(lines):
             del lines[task_number]  
             with open("Tasks.txt", "w") as tasksFile:
@@ -66,6 +69,7 @@ def deleteTask():
             print(f"Task {choice} has been deleted!")
         else:
             print("Invalid task number.")
+
     else:
         print("Invalid input!")
 
