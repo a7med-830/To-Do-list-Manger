@@ -27,6 +27,7 @@ def menu():
 
     return isrunning
 
+
 def addTask():
     while True:
         toDo = input("Enter your task : ")
