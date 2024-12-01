@@ -3,7 +3,7 @@
 def menu():
     global isrunning
     print("Main menu")
-    print("[1] Add Task \n[2] View Tasks ")
+    print("[1] Add Task \n[2] View Tasks \n[3] Delete Tasks")
     print("[q] Quit")
 
     choice = input("choose an option : ").lower()
@@ -21,6 +21,8 @@ def menu():
             addTask()
         case '2':
             TaskView()
+        case '3':
+            deleteTask()
         case 'q':
             isrunning = False
     
@@ -38,11 +40,26 @@ def addTask():
         if input("do you want to add any other tasks? [y/n] : ").lower() == "n":
             break
 
-def TaskView():
-    for taskNum,task in toDoList.items():
-        print(f"{taskNum} : {task}")
+def deleteTask():
+    TaskView()
+    toDoNum = input("[a] to delete all \nEnter the number of the task you want to delete : ")
+
+    if toDoNum.lower() == 'a':
+        toDoList.clear()
+        print("Deleted all tasks successfully")
+    else:
+        del toDoList[toDoNum]
+        print("Deleted selected Task successfully")
     
 
+
+
+def TaskView():
+    print ("-" * 50)
+    print("Your Tasks : ")
+    for taskNum,task in toDoList.items():
+        print(f"{taskNum}- {task}")
+    print ("-" * 50)
 
 
 
